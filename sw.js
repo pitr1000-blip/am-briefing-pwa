@@ -1,7 +1,5 @@
-const CACHE_NAME = "am-briefing-v1";
-const CORE_ASSETS = [
-  "./",
-  "./index.html",
+const CACHE_NAME = "am-briefing-v2";
+const STATIC_ASSETS = [
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -11,7 +9,7 @@ const CORE_ASSETS = [
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
   );
   self.skipWaiting();
 });
@@ -25,14 +23,22 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Cache-first for static assets (this app + fonts). Everything else just goes to network.
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
+  const url = new URL(event.request.url);
+  const isPage =
+    event.request.mode === "navigate" ||
+    url.pathname === "/" ||
+    url.pathname.endsWith("/index.html");
+
+  if (isPage) {
+    // 매일 아침 갱신되는 브리핑 본문은 "네트워크 우선"으로 바꿨어요.
+    // 예전 버전(캐시 우선)은 한 번 캐시되면 서버가 갱신돼도 계속 옛날
+    // 화면을 보여주는 문제가 있었습니다. 온라인일 땐 항상 최신을 받고,
+    // 오프라인일 때만 마지막으로 받아둔 캐시로 대체해요.
+    event.respondWith(
+      fetch(event.request)
         .then((res) => {
           if (res && res.status === 200) {
             const clone = res.clone();
@@ -40,7 +46,22 @@ self.addEventListener("fetch", (event) => {
           }
           return res;
         })
-        .catch(() => cached);
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // 아이콘/매니페스트처럼 거의 안 바뀌는 정적 자산은 캐시 우선 유지.
+  event.respondWith(
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request).then((res) => {
+        if (res && res.status === 200) {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return res;
+      });
     })
   );
 });
