@@ -54,7 +54,13 @@ self.addEventListener("fetch", (event) => {
           }
           return res;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() =>
+          // 네트워크 실패 시 캐시로 대체하되, 캐시도 없으면(예: 처음 방문한
+          // 도메인) respondWith에 undefined를 넘기지 않도록 유효한 에러
+          // Response를 돌려줍니다. (undefined를 넘기면 "Failed to convert
+          // value to 'Response'" 예외가 발생해요.)
+          caches.match(event.request).then((cached) => cached || Response.error())
+        )
     );
     return;
   }
@@ -63,13 +69,15 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
-      return fetch(event.request).then((res) => {
-        if (res && res.status === 200) {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return res;
-      });
+      return fetch(event.request)
+        .then((res) => {
+          if (res && res.status === 200) {
+            const clone = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return res;
+        })
+        .catch(() => Response.error());
     })
   );
 });

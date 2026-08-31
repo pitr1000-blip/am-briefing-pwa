@@ -688,6 +688,7 @@
       .then(function(json){
         btn.disabled = false; btn.textContent = "검색";
         if(!json || !json.ok || !json.items || !json.items.length){
+          if(json && json.raw){ console.warn("[AM브리핑] 검색 파싱 실패, upstream raw:", json.raw); }
           box.innerHTML = '<div class="search-msg">검색 결과가 없어요. 6자리 종목코드로 직접 입력해보세요.</div>';
           return;
         }
