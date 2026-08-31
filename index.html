@@ -244,6 +244,10 @@
   .gauge .fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent-soft);border-radius:4px;}
   .gauge .dot{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--card);transform:translate(-50%,-50%);}
   .gauge-caption{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:5px;}
+  .tech-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .tech-chip{font-size:10.5px;font-weight:700;color:var(--ink-soft);background:var(--card-2);border:1px solid var(--line);border-radius:20px;padding:3px 8px;font-variant-numeric:tabular-nums;}
+  .tech-chip.up{color:var(--up);}
+  .tech-chip.down{color:var(--down);}
   .remove-link{border:none;background:none;color:var(--muted);font-size:11.5px;cursor:pointer;font-family:inherit;text-decoration:underline;padding:0;margin-top:8px;}
   .remove-link:hover{color:var(--up);}
   .watch-empty{font-size:13px;color:var(--muted);text-align:center;padding:20px 0;}
@@ -512,7 +516,27 @@
     );
   }
 
-  function quoteCardInnerHTML(code, q){
+  function technicalsRowHTML(t){
+    if(!t || !t.ok) return "";
+    var chips = [];
+    if(t.priceVsSma20 != null){
+      var sign = t.priceVsSma20 >= 0 ? "up" : "down";
+      chips.push('<span class="tech-chip '+sign+'">20일선 대비 '+(t.priceVsSma20>=0?"+":"")+t.priceVsSma20.toFixed(1)+'%</span>');
+    }
+    if(t.rsi14 != null){
+      var rsiLabel = t.rsi14 >= 70 ? "과매수" : (t.rsi14 <= 30 ? "과매도" : "중립");
+      chips.push('<span class="tech-chip">RSI '+t.rsi14.toFixed(0)+' ('+rsiLabel+')</span>');
+    }
+    if(t.volumeRatio != null){
+      var volPct = Math.round(t.volumeRatio*100);
+      var spike = t.volumeRatio >= 2 ? " 🔥급증" : "";
+      chips.push('<span class="tech-chip">거래량 평소 대비 '+volPct+'%'+spike+'</span>');
+    }
+    if(!chips.length) return "";
+    return '<div class="tech-row">'+chips.join("")+'</div>';
+  }
+
+  function quoteCardInnerHTML(code, q, t){
     var perText = (q.per==null) ? "PER 비공개" : ("PER " + q.per);
     var pbrText = (q.pbr==null) ? "" : ('<span>PBR <b>'+q.pbr+'</b></span>');
     var dirClass = q.direction === "down" ? "down" : "up";
@@ -534,6 +558,7 @@
       '</div>'+
       '<div class="stock-meta"><span>'+perText+'</span>'+pbrText+'</div>'+
       gaugeHTML+
+      technicalsRowHTML(t)+
       '<button class="remove-link" data-remove="'+code+'" type="button">관심종목에서 빼기</button>'
     );
   }
@@ -559,15 +584,28 @@
       .catch(function(){ return {ok:false, error:"network"}; });
   }
 
+  var technicalsCache = {}; // code -> /api/technicals response (this page load only)
+  function fetchTechnicals(code){
+    if(technicalsCache[code]) return Promise.resolve(technicalsCache[code]);
+    return fetch("/api/technicals?code="+code)
+      .then(function(r){ return r.json(); })
+      .then(function(json){
+        if(json && json.ok){ technicalsCache[code] = json; }
+        return json;
+      })
+      .catch(function(){ return {ok:false, error:"network"}; });
+  }
+
   function loadCardQuote(code, name){
     var card = document.querySelector('.stock-card[data-code="'+code+'"]');
     if(!card) return;
-    fetchQuote(code).then(function(q){
+    Promise.all([fetchQuote(code), fetchTechnicals(code)]).then(function(results){
+      var q = results[0], t = results[1];
       card = document.querySelector('.stock-card[data-code="'+code+'"]'); // may have re-rendered
       if(!card) return;
       card.classList.remove("skeleton");
       if(q && q.ok){
-        card.innerHTML = quoteCardInnerHTML(code, q);
+        card.innerHTML = quoteCardInnerHTML(code, q, t);
         // if this stock had no cached name yet, remember it for next render
         watch = watch.map(function(w){ return w.code===code ? {code:code, name:q.name} : w; });
         saveWatch(watch);
