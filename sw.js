@@ -27,6 +27,14 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   const url = new URL(event.request.url);
+
+  // /api/* 는 실시간 시세·수급·기술적 지표 등 "매 방문마다 새로 조회돼야
+  // 하는" 데이터라서, 서비스워커가 아예 관여하지 않고 브라우저가 평소처럼
+  // 네트워크로 바로 보내게 둡니다 (캐시하지 않음).
+  if (url.pathname.startsWith("/api/")) {
+    return;
+  }
+
   const isPage =
     event.request.mode === "navigate" ||
     url.pathname === "/" ||
