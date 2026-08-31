@@ -1,7 +1,7 @@
 {
-  "name": "AM브리핑 - 국내주식 아침 브리핑",
-  "short_name": "AM브리핑",
-  "description": "매일 아침 코스피·코스닥 시황과 관심종목을 쉬운 말로 브리핑해주는 개인 주식 코치",
+  "name": "국내 증시 브리핑 - 실시간 국내주식 브리핑",
+  "short_name": "증시브리핑",
+  "description": "하루 중 여러 번, 코스피·코스닥 시황과 관심종목을 쉬운 말로 브리핑해주는 개인 주식 코치",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
