@@ -158,6 +158,34 @@
   .news-card .headline{font-size:14.5px;font-weight:600;line-height:1.5;margin:0 0 6px;}
   .news-card .why{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0;}
 
+  .sector-note{font-size:12px;color:var(--muted);margin:-4px 0 12px;padding:0 2px;}
+  .sector-sub{font-size:11px;font-weight:700;color:var(--muted);margin:0 0 8px;padding:0 2px;}
+  .sector-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .sector-grid:last-child{margin-bottom:0;}
+  .sector-pill{
+    display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:6px 12px;font-size:12.5px;font-weight:600;box-shadow:var(--shadow);
+  }
+  .sector-pill .rate{font-variant-numeric:tabular-nums;font-weight:800;}
+  .sector-pill.up .rate{color:var(--up);}
+  .sector-pill.down .rate{color:var(--down);}
+
+  .mover-sub{font-size:11px;font-weight:700;color:var(--muted);margin:0 0 8px;padding:0 2px;}
+  .mover-list{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+    overflow:hidden;margin-bottom:14px;
+  }
+  .mover-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);}
+  .mover-row:last-child{border-bottom:none;}
+  .mover-rank{font-size:12px;font-weight:800;color:var(--muted);width:14px;flex-shrink:0;}
+  .mover-name{flex:1;min-width:0;}
+  .mover-name .n{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .mover-name .c{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .mover-rate{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;flex-shrink:0;}
+  .mover-rate.up{color:var(--up);}
+  .mover-rate.down{color:var(--down);}
+  .mover-caption{font-size:11px;color:var(--muted);line-height:1.6;margin:10px 2px 0;}
+
   .watch-header{display:flex;align-items:center;justify-content:space-between;padding:0 2px;margin-bottom:12px;}
   .add-btn{
     font-size:12.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);
@@ -175,6 +203,31 @@
   }
   .picker .chip:hover{border-color:var(--accent);color:var(--accent);}
   .picker .empty{font-size:12px;color:var(--muted);padding:4px 2px;}
+  .search-row{display:flex;gap:8px;}
+  .search-input{
+    flex:1;min-width:0;font-size:13.5px;font-family:inherit;padding:9px 12px;border-radius:10px;
+    border:1px solid var(--line);background:var(--card);color:var(--ink);
+  }
+  .search-input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .search-btn{
+    font-size:13px;font-weight:700;color:var(--card);background:var(--accent);border:none;
+    border-radius:10px;padding:0 16px;cursor:pointer;font-family:inherit;
+  }
+  .search-btn:disabled{opacity:.55;cursor:default;}
+  #searchResults{margin-top:10px;display:flex;flex-direction:column;gap:6px;}
+  .result-row{
+    display:flex;align-items:center;justify-content:space-between;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;font-family:inherit;
+    text-align:left;width:100%;
+  }
+  .result-row:hover{border-color:var(--accent);}
+  .result-row .rn{font-size:13.5px;font-weight:700;color:var(--ink);}
+  .result-row .rc{font-size:11px;color:var(--muted);margin-left:8px;font-variant-numeric:tabular-nums;}
+  .result-row .radd{font-size:11.5px;font-weight:700;color:var(--accent);}
+  .search-msg{font-size:12px;color:var(--muted);padding:2px;}
+  .skeleton{opacity:.5;}
+  .qerr{font-size:11.5px;color:var(--up);margin-top:6px;}
+  .retry-link{border:none;background:none;color:var(--accent);font-size:11.5px;cursor:pointer;font-family:inherit;text-decoration:underline;padding:0;}
 
   .stock-card{
     background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;
@@ -207,13 +260,13 @@
 
   <header class="masthead">
     <div class="wordmark">AM<span>브리핑</span></div>
-    <div class="date-line">2026.08.31 (월)<br>장중 · 11:29 기준</div>
+    <div class="date-line">2026.08.31 (월)<br>장중 · 10:58 기준</div>
   </header>
 
   <section class="hero-card">
     <p class="eyebrow">오늘 아침 한 줄</p>
-    <h1 id="heroHeadline">코스피 2%대·코스닥 3%대 동반 급락</h1>
-    <p class="hero-sub">코스피는 139.02포인트(2.05%) 내린 6,649.86에, 코스닥은 27.01포인트(3.22%) 밀린 811.40에 거래되고 있어요. 두 시장 합쳐 475개 종목이 오르고 2,082개 종목이 내리는 등 하락 종목이 압도적으로 많은 하루예요.</p>
+    <h1 id="heroHeadline">코스피, 장중 2%대 급락…6,700선 내줘</h1>
+    <p class="hero-sub">코스피 상장종목 909개 중 745개가 하락하고 142개만 올랐어요 — 업종을 가리지 않는 전방위 약세예요. 코스닥은 3%대 밀리며 811선까지 내려왔습니다.</p>
   </section>
 
   <section>
@@ -221,8 +274,8 @@
     <div class="stat-grid">
       <div class="stat-tile">
         <div class="label">KOSPI</div>
-        <div class="value">6,649.86</div>
-        <span class="badge down">▼ 2.05%</span>
+        <div class="value">6,633.70</div>
+        <span class="badge down">▼ 2.29%</span>
         <div class="spark-wrap">
           <svg class="spark" id="sparkKospi" viewBox="0 0 260 46" preserveAspectRatio="none"></svg>
           <div class="spark-tip" id="tipKospi"></div>
@@ -231,8 +284,8 @@
       </div>
       <div class="stat-tile">
         <div class="label">KOSDAQ</div>
-        <div class="value">811.40</div>
-        <span class="badge down">▼ 3.22%</span>
+        <div class="value">811.05</div>
+        <span class="badge down">▼ 3.26%</span>
         <div class="spark-wrap">
           <svg class="spark" id="sparkKosdaq" viewBox="0 0 260 46" preserveAspectRatio="none"></svg>
           <div class="spark-tip" id="tipKosdaq"></div>
@@ -243,26 +296,64 @@
   </section>
 
   <section>
+    <h2 class="section-title">업종 동향</h2>
+    <p class="sector-note">오늘은 표본 업종 10개가 전부 하락했어요. 그래도 상대적으로 낙폭이 작았던 업종과, 유독 부진했던 업종을 나눠봤어요.</p>
+    <p class="sector-sub">그나마 선방한 업종</p>
+    <div class="sector-grid">
+      <div class="sector-pill down"><span class="name">화학</span><span class="rate">▼0.24%</span></div>
+      <div class="sector-pill down"><span class="name">운송장비·부품</span><span class="rate">▼1.39%</span></div>
+      <div class="sector-pill down"><span class="name">유통</span><span class="rate">▼1.42%</span></div>
+    </div>
+    <p class="sector-sub">낙폭이 컸던 업종</p>
+    <div class="sector-grid">
+      <div class="sector-pill down"><span class="name">금속</span><span class="rate">▼3.95%</span></div>
+      <div class="sector-pill down"><span class="name">의료·정밀기기</span><span class="rate">▼3.74%</span></div>
+      <div class="sector-pill down"><span class="name">보험</span><span class="rate">▼3.44%</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">시장 무버스</h2>
+    <p class="mover-sub">오늘의 급등주 TOP 5</p>
+    <div class="mover-list">
+      <div class="mover-row"><span class="mover-rank">1</span><div class="mover-name"><div class="n">LK삼양</div><div class="c">225190</div></div><span class="mover-rate up">▲29.99%</span></div>
+      <div class="mover-row"><span class="mover-rank">2</span><div class="mover-name"><div class="n">강동씨앤엘</div><div class="c">198440</div></div><span class="mover-rate up">▲29.94%</span></div>
+      <div class="mover-row"><span class="mover-rank">3</span><div class="mover-name"><div class="n">엑사이엔씨</div><div class="c">054940</div></div><span class="mover-rate up">▲29.55%</span></div>
+      <div class="mover-row"><span class="mover-rank">4</span><div class="mover-name"><div class="n">모아라이프플러스</div><div class="c">142760</div></div><span class="mover-rate up">▲29.94%</span></div>
+      <div class="mover-row"><span class="mover-rank">5</span><div class="mover-name"><div class="n">E8</div><div class="c">418620</div></div><span class="mover-rate up">▲16.67%</span></div>
+    </div>
+    <p class="mover-sub">거래대금 상위 종목 (ETF 제외)</p>
+    <div class="mover-list">
+      <div class="mover-row"><span class="mover-rank">1</span><div class="mover-name"><div class="n">SK하이닉스</div><div class="c">000660</div></div><span class="mover-rate down">▼2.48%</span></div>
+      <div class="mover-row"><span class="mover-rank">2</span><div class="mover-name"><div class="n">삼성전자</div><div class="c">005930</div></div><span class="mover-rate down">▼2.63%</span></div>
+      <div class="mover-row"><span class="mover-rank">3</span><div class="mover-name"><div class="n">삼성전기</div><div class="c">009150</div></div><span class="mover-rate down">▼2.67%</span></div>
+      <div class="mover-row"><span class="mover-rank">4</span><div class="mover-name"><div class="n">금호전기</div><div class="c">001210</div></div><span class="mover-rate up">▲16.57%</span></div>
+      <div class="mover-row"><span class="mover-rank">5</span><div class="mover-name"><div class="n">금호건설</div><div class="c">002990</div></div><span class="mover-rate up">▲0.06%</span></div>
+    </div>
+    <p class="mover-caption">급등주 TOP5는 거래대금·시가총액이 작아 변동성이 큰 종목이 섞여 있을 수 있어요. 투자 전 충분히 확인하세요.</p>
+  </section>
+
+  <section>
     <h2 class="section-title">오늘의 주요 뉴스</h2>
     <div class="news-card">
-      <span class="tag">2차전지 · 수주</span>
-      <p class="headline">SK온, 美 ESS배터리 1.5조원 수주</p>
-      <p class="why">SK온이 미국 에너지저장장치(ESS)용 배터리를 1조5000억원 규모로 수주했어요. 오늘 SK이노베이션·엘앤에프 등 2차전지주가 동반 강세를 보인 배경 중 하나예요.</p>
+      <span class="tag">AI · 영상</span>
+      <p class="headline">모픽, 지난 분기 매출 9.3배 증가…기업용 AI 영상 수요 확대</p>
+      <p class="why">기업들이 AI로 홍보·교육 영상을 자동 제작하는 수요가 커지고 있다는 신호예요. 관련 소프트웨어·미디어 업종을 눈여겨볼 만해요.</p>
     </div>
     <div class="news-card">
-      <span class="tag">바이오 · 공시</span>
-      <p class="headline">알테오젠, ALT-B4 파트너사 MSD로부터 마일스톤 수령 예정</p>
-      <p class="why">알테오젠의 히알루로니다제 기술(ALT-B4) 라이선스 파트너사 MSD로부터 판매 마일스톤을 받을 예정이라는 공시가 나왔어요. 다만 오늘 주가 자체는 차익실현 등 영향으로 7%대 밀렸어요.</p>
+      <span class="tag">AI · 제조</span>
+      <p class="headline">현대모비스, 협력사와 AI·로봇 제조혁신 확대…신기술 40여종 공개</p>
+      <p class="why">완성차 부품사가 공장 자동화에 속도를 내고 있어요. 현대차그룹 밸류체인 전반의 원가 경쟁력과 연결되는 뉴스예요.</p>
     </div>
     <div class="news-card">
-      <span class="tag">2차전지 · 업종</span>
-      <p class="headline">美 ESS 전력망 안보자산 격상·中 리튬광산 차질에 2차전지株 반등</p>
-      <p class="why">미국이 ESS를 전력망 안보자산으로 격상하고 중국 리튬 광산 재가동이 차질을 빚으면서 국내 2차전지주가 반등했어요. 시장 전체가 급락한 가운데도 일부 업종은 강세를 보였어요.</p>
+      <span class="tag">바이오 · AI</span>
+      <p class="headline">대웅제약, AI로 골다공증 위험군 찾는다…프로메디우스와 맞손</p>
+      <p class="why">제약사가 AI 진단 스타트업과 손잡는 사례가 늘고 있어요. 국내 헬스케어 업종의 AI 접목 속도를 보여주는 뉴스예요.</p>
     </div>
     <div class="news-card">
       <span class="tag">커머스</span>
-      <p class="headline">당근, 2분기 영업이익 158억원…전년比 127%↑</p>
-      <p class="why">중고거래 플랫폼 당근이 2분기 영업이익 158억원을 기록하며 전년 동기 대비 127% 늘었다고 밝혔어요. 지역 커머스·광고 사업이 실적을 이끈 것으로 보여요.</p>
+      <p class="headline">무신사 "일본 글로벌스토어, 7개월만에 작년 연간 거래액 달성"</p>
+      <p class="why">국내 패션 플랫폼의 해외 성장세가 뚜렷해요. 관련 커머스·물류 업종 실적 기대감으로 이어질 수 있는 흐름이에요.</p>
     </div>
   </section>
 
@@ -271,13 +362,19 @@
       <h2 class="section-title" style="margin:0;">내 관심종목</h2>
       <button class="add-btn" id="addBtn" type="button">+ 종목 추가</button>
     </div>
-    <div class="picker" id="picker"></div>
+    <div class="picker" id="picker">
+      <div class="search-row">
+        <input type="text" id="searchInput" class="search-input" placeholder="종목명 또는 코드 (예: 삼성전자, 005930)" autocomplete="off">
+        <button class="search-btn" id="searchBtn" type="button">검색</button>
+      </div>
+      <div id="searchResults"></div>
+    </div>
     <div id="watchlist"></div>
   </section>
 
   <footer>
     <p class="disclaimer">이 브리핑은 정보 제공을 목적으로 하며 투자 권유가 아니에요. 실제 투자 판단과 결과에 대한 책임은 투자자 본인에게 있습니다.</p>
-    <div class="demo-note">ⓘ 이 화면은 국내 시세 API로 가져온 스냅샷으로 채운 프로토타입이에요. 관심종목은 이 기기의 브라우저에만 저장돼요.</div>
+    <div class="demo-note">ⓘ 시장 스냅샷/뉴스는 매일 아침 갱신되는 데이터예요. 관심종목은 "+ 종목 추가"에서 아무 종목이나 검색해서 실시간 가격으로 담을 수 있고, 이 기기의 브라우저에만 저장돼요.</div>
     <div class="install-hint" id="installHint">📲 홈 화면에 설치할 수 있어요 — 브라우저 메뉴에서 "홈 화면에 추가"를 눌러보세요.</div>
   </footer>
 </div>
@@ -286,27 +383,27 @@
 (function(){
   "use strict";
 
-  var KOSPI_HIST = [["8/11",6345.53],["8/12",6579.04],["8/13",6813.34],["8/14",6977.94],
-    ["8/18",6869.83],["8/19",6471.17],["8/20",6852.58],["8/21",6912.95],["8/24",6696.96],
-    ["8/25",6742.74],["8/26",6808.21],["8/27",6912.37],["8/28",6788.88],["8/31",6649.86]];
-  var KOSDAQ_HIST = [["8/11",857.84],["8/12",858.91],["8/13",861.37],["8/14",864.65],
-    ["8/18",834.20],["8/19",824.46],["8/20",840.89],["8/21",801.94],["8/24",813.33],
-    ["8/25",827.15],["8/26",826.87],["8/27",837.65],["8/28",838.41],["8/31",811.40]];
+  var KOSPI_HIST = [["8/11",6345.53],["8/12",6579.04],["8/13",6813.34],["8/14",6977.94],["8/18",6869.83],
+    ["8/19",6471.17],["8/20",6852.58],["8/21",6912.95],["8/24",6696.96],["8/25",6742.74],
+    ["8/26",6808.21],["8/27",6912.37],["8/28",6788.88],["8/31",6633.70]];
+  var KOSDAQ_HIST = [["8/11",857.84],["8/12",858.91],["8/13",861.37],["8/14",864.65],["8/18",834.20],
+    ["8/19",824.46],["8/20",840.89],["8/21",801.94],["8/24",813.33],["8/25",827.15],
+    ["8/26",826.87],["8/27",837.65],["8/28",838.41],["8/31",811.05]];
 
-  var STOCKS = {
-    "005930":{name:"삼성전자",price:257000,per:38.91,pbr:4.02,low:67500,high:374500},
-    "000660":{name:"SK하이닉스",price:1653000,per:26.64,pbr:9.62,low:253000,high:2987000},
-    "035420":{name:"NAVER",price:220500,per:16.95,pbr:1.2,low:181100,high:304000},
-    "035720":{name:"카카오",price:36850,per:32.96,pbr:1.44,low:32250,high:69700},
-    "005380":{name:"현대차",price:399500,per:11.07,pbr:0.91,low:212000,high:783000},
-    "373220":{name:"LG에너지솔루션",price:370000,per:null,pbr:4.28,low:290500,high:527000},
-    "068270":{name:"셀트리온",price:190700,per:42.86,pbr:2.54,low:158500,high:251000},
-    "005490":{name:"POSCO홀딩스",price:337500,per:38.81,pbr:0.46,low:258500,high:542000}
-  };
-  var DEFAULT_WATCH = ["005930","000660"];
+  // Watchlist entries are just {code, name} now — live price/PER/PBR/52wk
+  // range are fetched on demand from our own /api/quote serverless function
+  // (which wraps a real-time-ish public stock data source), not baked in.
+  var DEFAULT_WATCH = [{code:"005930",name:"삼성전자"},{code:"000660",name:"SK하이닉스"}];
+  var QUICK_ADD = [
+    {code:"005930",name:"삼성전자"},{code:"000660",name:"SK하이닉스"},{code:"035420",name:"NAVER"},
+    {code:"035720",name:"카카오"},{code:"005380",name:"현대차"},{code:"373220",name:"LG에너지솔루션"}
+  ];
 
-  function fmtWon(n){ return n.toLocaleString("ko-KR") + "원"; }
-  function pct(price,low,high){ return Math.max(0,Math.min(100, (price-low)/(high-low)*100 )); }
+  function fmtWon(n){ return Math.round(n).toLocaleString("ko-KR") + "원"; }
+  function pct(price,low,high){
+    if(low==null || high==null || high<=low) return null;
+    return Math.max(0,Math.min(100, (price-low)/(high-low)*100 ));
+  }
 
   // ---------- sparkline ----------
   function renderSpark(svgId, tipId, data){
@@ -368,16 +465,20 @@
   renderSpark("sparkKospi","tipKospi",KOSPI_HIST);
   renderSpark("sparkKosdaq","tipKosdaq",KOSDAQ_HIST);
 
-  // ---------- watchlist (localStorage) ----------
+  // ---------- watchlist (localStorage, entries = {code,name}) ----------
   var STORE_KEY = "am-briefing-watchlist";
+  var quoteCache = {}; // code -> quote response (this page load only)
 
   function loadWatch(){
     try{
       var raw = localStorage.getItem(STORE_KEY);
       if(!raw) return DEFAULT_WATCH.slice();
       var parsed = JSON.parse(raw);
-      if(Array.isArray(parsed) && parsed.length) return parsed;
-      return DEFAULT_WATCH.slice();
+      if(!Array.isArray(parsed) || !parsed.length) return DEFAULT_WATCH.slice();
+      // migrate old format (array of code strings) transparently
+      return parsed.map(function(item){
+        return (typeof item === "string") ? {code:item, name:null} : item;
+      });
     }catch(e){ return DEFAULT_WATCH.slice(); }
   }
   function saveWatch(list){
@@ -386,70 +487,189 @@
 
   var watch = loadWatch();
 
-  function stockCardHTML(code){
-    var s = STOCKS[code];
-    if(!s) return "";
-    var p = pct(s.price, s.low, s.high);
-    var perText = (s.per===null) ? "적자" : ("PER " + s.per);
+  function skeletonCardHTML(item){
     return (
-      '<div class="stock-card" data-code="'+code+'">'+
+      '<div class="stock-card skeleton" data-code="'+item.code+'">'+
         '<div class="stock-top">'+
-          '<div><div class="stock-name">'+s.name+'</div><div class="stock-code">'+code+'</div></div>'+
-          '<div class="stock-price"><div class="p">'+fmtWon(s.price)+'</div></div>'+
+          '<div><div class="stock-name">'+(item.name || item.code)+'</div><div class="stock-code">'+item.code+'</div></div>'+
+          '<div class="stock-price"><div class="p">불러오는 중…</div></div>'+
         '</div>'+
-        '<div class="stock-meta"><span>'+perText+'</span><span>PBR <b>'+s.pbr+'</b></span></div>'+
-        '<div class="gauge"><div class="fill" style="width:'+p.toFixed(1)+'%"></div><div class="dot" style="left:'+p.toFixed(1)+'%"></div></div>'+
-        '<div class="gauge-caption"><span>52주 최저 '+fmtWon(s.low)+'</span><span>최고 '+fmtWon(s.high)+'</span></div>'+
-        '<button class="remove-link" data-remove="'+code+'" type="button">관심종목에서 빼기</button>'+
+        '<button class="remove-link" data-remove="'+item.code+'" type="button">관심종목에서 빼기</button>'+
       '</div>'
     );
+  }
+
+  function quoteCardInnerHTML(code, q){
+    var perText = (q.per==null) ? "PER 비공개" : ("PER " + q.per);
+    var pbrText = (q.pbr==null) ? "" : ('<span>PBR <b>'+q.pbr+'</b></span>');
+    var dirClass = q.direction === "down" ? "down" : "up";
+    var arrow = q.direction === "down" ? "▼" : (q.direction === "up" ? "▲" : "•");
+    var rateText = (q.changeRate==null) ? "" : (arrow + " " + Math.abs(q.changeRate).toFixed(2) + "%");
+    var p = pct(q.price, q.low52, q.high52);
+    var gaugeHTML = "";
+    if(p != null){
+      gaugeHTML =
+        '<div class="gauge"><div class="fill" style="width:'+p.toFixed(1)+'%"></div><div class="dot" style="left:'+p.toFixed(1)+'%"></div></div>'+
+        '<div class="gauge-caption"><span>52주 최저 '+fmtWon(q.low52)+'</span><span>최고 '+fmtWon(q.high52)+'</span></div>';
+    }
+    return (
+      '<div class="stock-top">'+
+        '<div><div class="stock-name">'+q.name+'</div><div class="stock-code">'+code+' · 실시간</div></div>'+
+        '<div class="stock-price"><div class="p">'+fmtWon(q.price)+'</div>'+
+          (rateText ? '<span class="badge '+dirClass+'">'+rateText+'</span>' : '')+
+        '</div>'+
+      '</div>'+
+      '<div class="stock-meta"><span>'+perText+'</span>'+pbrText+'</div>'+
+      gaugeHTML+
+      '<button class="remove-link" data-remove="'+code+'" type="button">관심종목에서 빼기</button>'
+    );
+  }
+
+  function quoteCardErrorInnerHTML(code, name){
+    return (
+      '<div class="stock-top">'+
+        '<div><div class="stock-name">'+(name||code)+'</div><div class="stock-code">'+code+'</div></div>'+
+      '</div>'+
+      '<div class="qerr">실시간 가격을 불러오지 못했어요. <button class="retry-link" data-retry="'+code+'" type="button">다시 시도</button></div>'+
+      '<button class="remove-link" data-remove="'+code+'" type="button">관심종목에서 빼기</button>'
+    );
+  }
+
+  function fetchQuote(code){
+    if(quoteCache[code]) return Promise.resolve(quoteCache[code]);
+    return fetch("/api/quote?code="+code)
+      .then(function(r){ return r.json(); })
+      .then(function(json){
+        if(json && json.ok){ quoteCache[code] = json; }
+        return json;
+      })
+      .catch(function(){ return {ok:false, error:"network"}; });
+  }
+
+  function loadCardQuote(code, name){
+    var card = document.querySelector('.stock-card[data-code="'+code+'"]');
+    if(!card) return;
+    fetchQuote(code).then(function(q){
+      card = document.querySelector('.stock-card[data-code="'+code+'"]'); // may have re-rendered
+      if(!card) return;
+      card.classList.remove("skeleton");
+      if(q && q.ok){
+        card.innerHTML = quoteCardInnerHTML(code, q);
+        // if this stock had no cached name yet, remember it for next render
+        watch = watch.map(function(w){ return w.code===code ? {code:code, name:q.name} : w; });
+        saveWatch(watch);
+      }else{
+        card.innerHTML = quoteCardErrorInnerHTML(code, name);
+      }
+      bindCardButtons(card);
+    });
+  }
+
+  function bindCardButtons(scope){
+    Array.prototype.forEach.call(scope.querySelectorAll("[data-remove]"), function(btn){
+      btn.addEventListener("click", function(){
+        var code = btn.getAttribute("data-remove");
+        watch = watch.filter(function(w){ return w.code!==code; });
+        saveWatch(watch);
+        renderWatchlist();
+      });
+    });
+    Array.prototype.forEach.call(scope.querySelectorAll("[data-retry]"), function(btn){
+      btn.addEventListener("click", function(){
+        var code = btn.getAttribute("data-retry");
+        delete quoteCache[code];
+        var card = document.querySelector('.stock-card[data-code="'+code+'"]');
+        if(card){ card.classList.add("skeleton"); card.innerHTML = '<div class="stock-name">불러오는 중…</div>'; }
+        loadCardQuote(code, null);
+      });
+    });
   }
 
   function renderWatchlist(){
     var wrap = document.getElementById("watchlist");
     if(!watch.length){
       wrap.innerHTML = '<div class="watch-empty">아직 등록된 관심종목이 없어요. 위의 "+ 종목 추가"로 담아보세요.</div>';
-    }else{
-      wrap.innerHTML = watch.map(stockCardHTML).join("");
+      return;
     }
-    Array.prototype.forEach.call(wrap.querySelectorAll("[data-remove]"), function(btn){
+    wrap.innerHTML = watch.map(skeletonCardHTML).join("");
+    bindCardButtons(wrap);
+    watch.forEach(function(item){ loadCardQuote(item.code, item.name); });
+  }
+
+  function addStock(code, name){
+    if(watch.some(function(w){ return w.code===code; })) return;
+    watch.push({code:code, name:name||null});
+    saveWatch(watch);
+    renderWatchlist();
+    document.getElementById("picker").classList.remove("open");
+    document.getElementById("searchInput").value = "";
+  }
+
+  function renderQuickAdd(){
+    var box = document.getElementById("searchResults");
+    var addable = QUICK_ADD.filter(function(q){ return !watch.some(function(w){ return w.code===q.code; }); });
+    if(!addable.length){
+      box.innerHTML = '<div class="search-msg">종목명이나 코드를 검색해서 담아보세요.</div>';
+      return;
+    }
+    box.innerHTML = '<div class="search-msg">빠른 추가</div>' + addable.map(function(q){
+      return '<button class="result-row" data-quick="'+q.code+'" type="button"><span><span class="rn">'+q.name+'</span><span class="rc">'+q.code+'</span></span><span class="radd">+ 담기</span></button>';
+    }).join("");
+    Array.prototype.forEach.call(box.querySelectorAll("[data-quick]"), function(btn){
       btn.addEventListener("click", function(){
-        var code = btn.getAttribute("data-remove");
-        watch = watch.filter(function(c){ return c!==code; });
-        saveWatch(watch);
-        renderWatchlist();
-        renderPicker();
+        var code = btn.getAttribute("data-quick");
+        var found = QUICK_ADD.filter(function(q){ return q.code===code; })[0];
+        addStock(code, found ? found.name : null);
       });
     });
   }
 
-  function renderPicker(){
-    var picker = document.getElementById("picker");
-    var addable = Object.keys(STOCKS).filter(function(c){ return watch.indexOf(c)===-1; });
-    if(!addable.length){
-      picker.innerHTML = '<div class="empty">모든 데모 종목이 이미 관심종목에 담겨 있어요.</div>';
-      return;
-    }
-    picker.innerHTML = addable.map(function(code){
-      return '<button class="chip" data-add="'+code+'" type="button">+ '+STOCKS[code].name+'</button>';
-    }).join("");
-    Array.prototype.forEach.call(picker.querySelectorAll("[data-add]"), function(btn){
-      btn.addEventListener("click", function(){
-        var code = btn.getAttribute("data-add");
-        if(watch.indexOf(code)===-1){ watch.push(code); }
-        saveWatch(watch);
-        renderWatchlist();
-        renderPicker();
+  function doSearch(){
+    var input = document.getElementById("searchInput");
+    var box = document.getElementById("searchResults");
+    var q = input.value.trim();
+    if(!q){ renderQuickAdd(); return; }
+    var btn = document.getElementById("searchBtn");
+    btn.disabled = true; btn.textContent = "검색중";
+    box.innerHTML = '<div class="search-msg">검색 중…</div>';
+    fetch("/api/search?q="+encodeURIComponent(q))
+      .then(function(r){ return r.json(); })
+      .then(function(json){
+        btn.disabled = false; btn.textContent = "검색";
+        if(!json || !json.ok || !json.items || !json.items.length){
+          box.innerHTML = '<div class="search-msg">검색 결과가 없어요. 6자리 종목코드로 직접 입력해보세요.</div>';
+          return;
+        }
+        box.innerHTML = json.items.map(function(it){
+          var label = it.name || "(이름 조회 중)";
+          return '<button class="result-row" data-add="'+it.code+'" data-name="'+(it.name||"")+'" type="button"><span><span class="rn">'+label+'</span><span class="rc">'+it.code+'</span></span><span class="radd">+ 담기</span></button>';
+        }).join("");
+        Array.prototype.forEach.call(box.querySelectorAll("[data-add]"), function(rbtn){
+          rbtn.addEventListener("click", function(){
+            addStock(rbtn.getAttribute("data-add"), rbtn.getAttribute("data-name") || null);
+          });
+        });
+      })
+      .catch(function(){
+        btn.disabled = false; btn.textContent = "검색";
+        box.innerHTML = '<div class="search-msg">검색 중 오류가 났어요. 6자리 종목코드로 직접 입력해보세요.</div>';
       });
-    });
   }
 
   document.getElementById("addBtn").addEventListener("click", function(){
-    document.getElementById("picker").classList.toggle("open");
+    var picker = document.getElementById("picker");
+    picker.classList.toggle("open");
+    if(picker.classList.contains("open")){ renderQuickAdd(); }
+  });
+  document.getElementById("searchBtn").addEventListener("click", doSearch);
+  document.getElementById("searchInput").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ e.preventDefault(); doSearch(); }
+  });
+  document.getElementById("searchInput").addEventListener("input", function(e){
+    if(!e.target.value.trim()){ renderQuickAdd(); }
   });
 
   renderWatchlist();
-  renderPicker();
 
   // ---------- PWA install hint + service worker ----------
   window.addEventListener("beforeinstallprompt", function(e){

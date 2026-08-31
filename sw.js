@@ -1,5 +1,7 @@
-const CACHE_NAME = "am-briefing-v2";
+const CACHE_NAME = "am-briefing-v1";
 const CORE_ASSETS = [
+  "./",
+  "./index.html",
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -23,24 +25,10 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
+// Cache-first for static assets (this app + fonts). Everything else just goes to network.
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
-  // HTML 페이지: 네트워크 우선, 오프라인일 때만 캐시로 대체
-  if (event.request.mode === "navigate") {
-    event.respondWith(
-      fetch(event.request)
-        .then((res) => {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          return res;
-        })
-        .catch(() => caches.match(event.request))
-    );
-    return;
-  }
-
-  // 아이콘 등 정적 자산: 캐시 우선
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
