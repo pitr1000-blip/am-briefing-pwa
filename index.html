@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>국내 증시 브리핑 — 실시간 국내주식 시황 브리핑</title>
 <meta name="description" content="하루 중 여러 번, 코스피·코스닥 시황과 관심종목을 쉬운 말로 브리핑해주는 개인 주식 코치">
@@ -390,6 +391,13 @@
 (function(){
   "use strict";
 
+  // 외부(네이버·KIS·localStorage)에서 온 문자열을 HTML에 넣기 전 이스케이프
+  function escHTML(v){
+    return String(v == null ? "" : v).replace(/[&<>"'`]/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;","`":"&#96;"}[c];
+    });
+  }
+
   var KOSPI_HIST = [
     ["11/03",5648.79],["11/04",5683.8],["11/05",5383.8],["11/06",5059.69],["11/09",5018.85],["11/10",5239.13],["11/11",5375.36],["11/12",5342.73],["11/13",5290.53],["11/16",5100.5],["11/17",4968.48],["11/18",5067.44],["11/19",5137.89],["11/20",4869.96]];
   var KOSDAQ_HIST = [
@@ -494,12 +502,12 @@
 
   function skeletonCardHTML(item){
     return (
-      '<div class="stock-card skeleton" data-code="'+item.code+'">'+
+      '<div class="stock-card skeleton" data-code="'+escHTML(item.code)+'">'+
         '<div class="stock-top">'+
-          '<div><div class="stock-name">'+(item.name || item.code)+'</div><div class="stock-code">'+item.code+'</div></div>'+
+          '<div><div class="stock-name">'+escHTML(item.name || item.code)+'</div><div class="stock-code">'+escHTML(item.code)+'</div></div>'+
           '<div class="stock-price"><div class="p">불러오는 중…</div></div>'+
         '</div>'+
-        '<button class="remove-link" data-remove="'+item.code+'" type="button">관심종목에서 빼기</button>'+
+        '<button class="remove-link" data-remove="'+escHTML(item.code)+'" type="button">관심종목에서 빼기</button>'+
       '</div>'
     );
   }
@@ -539,7 +547,7 @@
     }
     return (
       '<div class="stock-top">'+
-        '<div><div class="stock-name">'+q.name+'</div><div class="stock-code">'+code+' · 실시간</div></div>'+
+        '<div><div class="stock-name">'+escHTML(q.name)+'</div><div class="stock-code">'+escHTML(code)+' · 실시간</div></div>'+
         '<div class="stock-price"><div class="p">'+fmtWon(q.price)+'</div>'+
           (rateText ? '<span class="badge '+dirClass+'">'+rateText+'</span>' : '')+
         '</div>'+
@@ -547,17 +555,17 @@
       '<div class="stock-meta"><span>'+perText+'</span>'+pbrText+'</div>'+
       gaugeHTML+
       technicalsRowHTML(t)+
-      '<button class="remove-link" data-remove="'+code+'" type="button">관심종목에서 빼기</button>'
+      '<button class="remove-link" data-remove="'+escHTML(code)+'" type="button">관심종목에서 빼기</button>'
     );
   }
 
   function quoteCardErrorInnerHTML(code, name){
     return (
       '<div class="stock-top">'+
-        '<div><div class="stock-name">'+(name||code)+'</div><div class="stock-code">'+code+'</div></div>'+
+        '<div><div class="stock-name">'+escHTML(name||code)+'</div><div class="stock-code">'+escHTML(code)+'</div></div>'+
       '</div>'+
-      '<div class="qerr">실시간 가격을 불러오지 못했어요. <button class="retry-link" data-retry="'+code+'" type="button">다시 시도</button></div>'+
-      '<button class="remove-link" data-remove="'+code+'" type="button">관심종목에서 빼기</button>'
+      '<div class="qerr">실시간 가격을 불러오지 못했어요. <button class="retry-link" data-retry="'+escHTML(code)+'" type="button">다시 시도</button></div>'+
+      '<button class="remove-link" data-remove="'+escHTML(code)+'" type="button">관심종목에서 빼기</button>'
     );
   }
 
@@ -652,7 +660,7 @@
       return;
     }
     box.innerHTML = '<div class="search-msg">빠른 추가</div>' + addable.map(function(q){
-      return '<button class="result-row" data-quick="'+q.code+'" type="button"><span><span class="rn">'+q.name+'</span><span class="rc">'+q.code+'</span></span><span class="radd">+ 담기</span></button>';
+      return '<button class="result-row" data-quick="'+escHTML(q.code)+'" type="button"><span><span class="rn">'+escHTML(q.name)+'</span><span class="rc">'+escHTML(q.code)+'</span></span><span class="radd">+ 담기</span></button>';
     }).join("");
     Array.prototype.forEach.call(box.querySelectorAll("[data-quick]"), function(btn){
       btn.addEventListener("click", function(){
@@ -682,7 +690,7 @@
         }
         box.innerHTML = json.items.map(function(it){
           var label = it.name || "(이름 조회 중)";
-          return '<button class="result-row" data-add="'+it.code+'" data-name="'+(it.name||"")+'" type="button"><span><span class="rn">'+label+'</span><span class="rc">'+it.code+'</span></span><span class="radd">+ 담기</span></button>';
+          return '<button class="result-row" data-add="'+escHTML(it.code)+'" data-name="'+escHTML(it.name||"")+'" type="button"><span><span class="rn">'+escHTML(label)+'</span><span class="rc">'+escHTML(it.code)+'</span></span><span class="radd">+ 담기</span></button>';
         }).join("");
         Array.prototype.forEach.call(box.querySelectorAll("[data-add]"), function(rbtn){
           rbtn.addEventListener("click", function(){
@@ -724,14 +732,14 @@
       return (
         '<div class="mover-row">'+
           '<span class="mover-rank">'+(idx+1)+'</span>'+
-          '<div class="mover-name"><div class="n">'+(item.name||item.code||"-")+'</div><div class="c">'+(item.code||"")+'</div></div>'+
+          '<div class="mover-name"><div class="n">'+escHTML(item.name||item.code||"-")+'</div><div class="c">'+escHTML(item.code||"")+'</div></div>'+
           '<span class="mover-rate '+sign+'">'+qtyText+'</span>'+
         '</div>'
       );
     }).join("");
   }
   function flowErrorHTML(msg){
-    return '<div class="mover-row"><div class="mover-name"><div class="n qerr" style="margin-top:0;">수급 데이터를 불러오지 못했어요'+(msg?(" ("+msg+")"):"")+'</div></div></div>';
+    return '<div class="mover-row"><div class="mover-name"><div class="n qerr" style="margin-top:0;">수급 데이터를 불러오지 못했어요'+(msg?(" ("+escHTML(msg)+")"):"")+'</div></div></div>';
   }
   fetch("/api/investor-flow")
     .then(function(r){ return r.json(); })
