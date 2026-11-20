@@ -1,0 +1,36 @@
+name: guard
+on:
+  pull_request_target:
+    branches: [main]
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 변경 파일·위험 패턴 검사
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          files=$(gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[].filename')
+          echo "변경 파일: $files"
+          if [ "$files" != "index.html" ]; then
+            echo "::error::index.html 외 파일이 변경됨: $files"; exit 1
+          fi
+          gh api "repos/$REPO/contents/index.html?ref=$BASE" -H "Accept: application/vnd.github.raw" > base.html
+          gh api "repos/$REPO/contents/index.html?ref=$HEAD" -H "Accept: application/vnd.github.raw" > head.html
+          for pat in '<script' '<iframe' 'javascript:' '[[:space:]]on[a-z]+[[:space:]]*=' 'https?://'; do
+            b=$( (grep -oiE "$pat" base.html || true) | wc -l)
+            h=$( (grep -oiE "$pat" head.html || true) | wc -l)
+            echo "$pat  main=$b  PR=$h"
+            if [ "$h" -gt "$b" ]; then
+              echo "::error::'$pat' 가 새로 추가됨 ($b → $h)"; exit 1
+            fi
+          done
+          echo "통과"
