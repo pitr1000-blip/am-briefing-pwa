@@ -9,7 +9,7 @@ jobs:
   guard:
     runs-on: ubuntu-latest
     steps:
-      - name: 변경 파일·위험 패턴 검사
+      - name: 변경 파일·위험 패턴·보안 영역 검사
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -18,6 +18,7 @@ jobs:
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
+          # PR 코드는 실행하지 않고, API로 파일 내용만 받아서 비교합니다.
           files=$(gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[].filename')
           echo "변경 파일: $files"
           if [ "$files" != "index.html" ]; then
@@ -25,12 +26,38 @@ jobs:
           fi
           gh api "repos/$REPO/contents/index.html?ref=$BASE" -H "Accept: application/vnd.github.raw" > base.html
           gh api "repos/$REPO/contents/index.html?ref=$HEAD" -H "Accept: application/vnd.github.raw" > head.html
-          for pat in '<script' '<iframe' 'javascript:' '[[:space:]]on[a-z]+[[:space:]]*=' 'https?://'; do
-            b=$( (grep -oiE "$pat" base.html || true) | wc -l)
-            h=$( (grep -oiE "$pat" head.html || true) | wc -l)
-            echo "$pat  main=$b  PR=$h"
-            if [ "$h" -gt "$b" ]; then
-              echo "::error::'$pat' 가 새로 추가됨 ($b → $h)"; exit 1
-            fi
-          done
-          echo "통과"
+          python3 - base.html head.html <<'PY'
+          import re, sys, difflib, collections
+          base = open(sys.argv[1], encoding="utf-8").read()
+          head = open(sys.argv[2], encoding="utf-8").read()
+          errs = []
+          def headpart(s): return s.split("</head>", 1)[0]
+          def scripts(s): return re.findall(r"<script\b[^>]*>(.*?)</script>", s, re.S | re.I)
+          # 1) <head> 전체(CSP·메타·폰트 링크)는 그대로여야 함
+          if headpart(base) != headpart(head):
+              errs.append("<head> 영역이 바뀜 (CSP·메타태그·외부 링크는 변경 금지)")
+          # 2) <script>는 개수가 같고, 바뀐 줄은 KOSPI_HIST/KOSDAQ_HIST 데이터 줄뿐이어야 함
+          HIST = re.compile(r'^\s*(\["[0-9]{1,2}/[0-9]{1,2}",\s*-?[0-9]+(\.[0-9]+)?\],?\s*)+\];?\s*$')
+          sb, sh = scripts(base), scripts(head)
+          if len(sb) != len(sh):
+              errs.append(f"<script> 블록 개수 변경 ({len(sb)} → {len(sh)})")
+          else:
+              for a, b in zip(sb, sh):
+                  for l in difflib.unified_diff(a.splitlines(), b.splitlines(), lineterm="", n=0):
+                      if l.startswith(("+++", "---", "@@")): continue
+                      if l[:1] in "+-" and not HIST.match(l[1:]):
+                          errs.append("허용되지 않은 스크립트 변경: " + l[:120])
+          # 3) 위험 패턴이 새로 생기면 안 됨
+          for pat in [r"<script", r"<iframe", r"<object", r"<embed", r"<form", r"javascript:", r"data:text", r"\son[a-z]+\s*="]:
+              nb, nh = len(re.findall(pat, base, re.I)), len(re.findall(pat, head, re.I))
+              if nh > nb: errs.append(f"'{pat}' 증가 ({nb} → {nh})")
+          # 4) 새 URL 추가·바꿔치기 금지(삭제는 허용)
+          urls = lambda s: collections.Counter(re.findall(r"https?://[^\s\"'<>)]+", s))
+          added = urls(head) - urls(base)
+          if added:
+              errs.append(f"새 URL 추가(바꿔치기 포함): {sorted(added.elements())[:5]}")
+          if errs:
+              for e in errs: print("::error::" + e)
+              sys.exit(1)
+          print("통과")
+          PY
